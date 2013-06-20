@@ -1,6 +1,8 @@
 import java.lang.Math;
+import java.lang.reflect.Array;
+import java.lang.String;
+
 import java.util.Arrays;
-import java.util.ArrayList;
 
 public class CircularPrimes 
 {
@@ -26,31 +28,31 @@ public class CircularPrimes
     }
     
     public void printAnswer() {
-        System.out.printf("The number of circular primes under %d are %d", 
+        System.out.printf("The number of circular primes under %d is %d\n", 
                             maxCheck, totalOfCircularPrimes);
     }
     
     private boolean checkCircular(int checkNum) {
+    
         char[] circleArray = Integer.toString(checkNum).toCharArray();
         
-        ArrayList<Character> charArrayList = new ArrayList<Character>();
+        int arrayLength = Array.getLength(circleArray);
         
-        for(char c : circleArray) {
-            charArrayList.add(c);
-        }
-        
+        char[] tempArray = new char[arrayLength];
         String test;
-        char movingChar;
         
-        for(int i = 0; i < charArrayList.size(); i++) {
-            movingChar = charArrayList.get(0);
-            charArrayList.remove(0);
-            charArrayList.add(movingChar);
-            test = charArrayList.toArray();
-            System.out.println(test);
+        for(int i = 0; i < arrayLength; i++) {
+          
+            for(char c = 1; c < arrayLength; c++) {
+                tempArray[c - 1] = circleArray[c]; 
+            }
+            tempArray[arrayLength - 1] = circleArray[0];
+            test = new String(tempArray);
             if(checkPrime(Integer.valueOf(test)) == false) {
                 return false;
             }
+            circleArray = tempArray;
+            tempArray = new char[arrayLength];
         }
         return true;
     }
